@@ -19,6 +19,8 @@ class ChangePasswordController extends BaseWebCrud
 
     public $updateValidator = ChangePasswordRequest::class;
 
+    public $redirectSuccess = '/profile/change-password';
+
     public function index(Request $request)
     {
         return $this->edit(Auth::id());
