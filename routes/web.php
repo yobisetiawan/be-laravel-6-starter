@@ -11,13 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::namespace('Web')->group(function () {
+
     Auth::routes();
     Route::namespace('Dashboard')->group(function () {
+        Route::get('/', 'HomeController@index');
         Route::get('/home', 'HomeController@index')->name('home');
+    });
+
+    Route::namespace('Profile')->group(function () {
+        Route::get('/profile', 'ChangeProfileController@index')->name('web.profile');
+        Route::post('/profile', 'ChangeProfileController@store')->name('web.profile.update');
+        Route::get('/profile/change-password', 'ChangePasswordController@index')->name('web.profile.change.password');
+        Route::post('/profile/change-password', 'ChangePasswordController@store')->name('web.profile.update.password');
     });
 });
