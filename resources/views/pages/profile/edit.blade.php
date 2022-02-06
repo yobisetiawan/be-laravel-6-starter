@@ -5,9 +5,18 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <h1 class="mb-3">Profile </h1> 
+            <h1 class="mb-3">Profile </h1>
 
-            @component('components.alert.success')@endcomponent 
+            @component('components.alert.success')@endcomponent
+
+            <div class="mb-3 d-flex align-items-center">
+                <img src="{{url('images/avatar-empty.png')}}" class="rounded-circle" alt="" width="90">
+                <a href="{{route('web.profile.change.avatar')}}" class="ps-3">Change Avatar</a>
+
+                
+            </div>
+
+            {{ asset('storage/avatar/1.jpg') }}
 
             <form method="POST" action="{{ route('web.profile.update') }}">
                 @csrf
@@ -16,7 +25,7 @@
                 'field' => 'name',
                 'label' => 'Name',
                 'row' => $row
-                ])@endcomponent 
+                ])@endcomponent
 
 
                 <button type="submit" class="btn btn-primary">
