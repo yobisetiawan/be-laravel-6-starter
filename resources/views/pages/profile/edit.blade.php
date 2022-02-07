@@ -10,13 +10,9 @@
             @component('components.alert.success')@endcomponent
 
             <div class="mb-3 d-flex align-items-center">
-                <img src="{{url('images/avatar-empty.png')}}" class="rounded-circle" alt="" width="90">
+                <img src="{{$row->avatar_url ?? url('images/avatar-empty.png')}}" class="img-thumbnail" alt="" width="90">
                 <a href="{{route('web.profile.change.avatar')}}" class="ps-3">Change Avatar</a>
-
-                
-            </div>
-
-            {{ asset('storage/avatar/1.jpg') }}
+            </div> 
 
             <form method="POST" action="{{ route('web.profile.update') }}">
                 @csrf

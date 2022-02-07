@@ -17,6 +17,7 @@ class CreateFileInfosTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('url')->nullable();
+            $table->string('name')->nullable();
             $table->string('disk')->nullable();
             $table->string('path')->nullable();
             $table->string('mime_type')->nullable();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\FileConst;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -42,6 +43,6 @@ class User extends Authenticatable
 
     public function avatarInfo()
     {
-        return $this->morphOne(FileInfo::class, 'fileable');
+        return $this->morphOne(FileInfo::class, 'fileable')->where('slug', FileConst::USER_AVATAR_SLUG);
     }
 }

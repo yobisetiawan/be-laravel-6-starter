@@ -18,6 +18,8 @@ class UploadService
 
     public $option = 'public';
 
+    public $fileInfo;
+
     public function __construct($file, $path, $filename = null, $disk = null, $option = null)
     {
         $this->file = $file;
@@ -29,6 +31,8 @@ class UploadService
         $this->disk = $disk ?? $this->disk;
 
         $this->option = $option ?? $this->option;
+
+        $this->fileInfo = $this->setFileOriginalInfo();
     }
 
     public function uploadResize($size = 100)
@@ -53,5 +57,40 @@ class UploadService
     public function getURL()
     {
         return Storage::disk($this->disk)->url($this->path . '/' . $this->filename);
+    }
+
+    public function getSize()
+    {
+        return Storage::disk($this->disk)->size($this->path . '/' . $this->filename);
+    }
+
+    public function setFileOriginalInfo()
+    {
+        return [
+            'original_name' => $this->file->getClientOriginalName(),
+            'original_extension' => $this->file->getClientOriginalExtension(),
+            'original_size' => $this->file->getSize(),
+            'original_mimetype' => $this->file->getMimeType(),
+        ];
+    }
+
+   
+
+    public function getUploaded()
+    {
+        return [
+            'url' => $this->getURL(),
+            'disk' => $this->disk,
+            'path' => $this->path . '/' . $this->filename,
+            'mime_type' => $this->fileInfo['original_mimetype'],
+            'name' =>  $this->filename,
+            'size' => $this->getSize()
+        ];
+    }
+
+    public function saveFileInfo($obj, $extra_data = []){
+        $file_info = $this->getUploaded(); 
+        
+        $obj->updateOrCreate([], array_merge($file_info, $extra_data));
     }
 }

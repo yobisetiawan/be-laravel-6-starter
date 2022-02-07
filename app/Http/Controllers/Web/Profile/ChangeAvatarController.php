@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web\Profile;
 
+use App\Constants\FileConst;
 use App\Http\Modules\BaseWebCrud;
 use App\Http\Requests\Web\Profile\ChangeAvatarRequest;
 use App\Models\User;
@@ -36,15 +37,18 @@ class ChangeAvatarController extends BaseWebCrud
 
     public function __beforeUpdate()
     {
+        $user = Auth::user();
+
         $upload = new UploadService(
             $this->requestData->file('avatar'),
-            'public/avatars',
+            FileConst::USER_AVATAR_PATH,
             Auth::id()
         );
 
         $upload->upload();
+        $upload->saveFileInfo($user->avatarInfo(), ['slug' =>  FileConst::USER_AVATAR_SLUG]);
 
-        $this->avatar_upload = $upload->getURL();
+        $this->avatar_upload = $upload->getURL(); 
 
         return false;
     }
@@ -53,16 +57,5 @@ class ChangeAvatarController extends BaseWebCrud
     {
         $data['avatar_url'] = $this->avatar_upload;
         return $data;
-    }
-
-    public function __insertFileInfo()
-    {
-        // $table->string('url')->nullable();
-        // $table->string('disk')->nullable();
-        // $table->string('path')->nullable();
-        // $table->string('mime_type')->nullable();
-        // $table->integer('size')->nullable();
-        // $table->string('slug')->nullable();
-        // $table->json('data')->nullable();
     }
 }
